@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="screen active" id="modeScreen">
+        <h1>🎮 Tic Tac Toe</h1>
+        <div class="subtitle">Choose your game mode</div>
+        <div class="options">
+          <button onclick="selectMode('pvp')">👥 Player v/s Player</button>
+          <button onclick="selectMode('bot')">🤖 Player v/s Bot</button>
+        </div>
+      </div>
+
+      <div class="screen" id="botPlayerScreen">
+        <h1>🤖 Player vs Bot</h1>
+        <div class="subtitle">Choose your symbol</div>
+        <div class="options horizontal">
+          <button onclick="selectBotPlayer('X')">Play as X</button>
+          <button onclick="selectBotPlayer('O')">Play as O</button>
+        </div>
+      </div>
+      <div class="screen" id="difficultyScreen">
+        <h1>🧠 Choose Difficulty</h1>
+        <div class="subtitle">Select your challenge level</div>
+        <div class="options horizontal">
+          <button onclick="selectDifficulty('easy')">😴 Easy</button>
+          <button onclick="selectDifficulty('medium')">🙂 Medium</button>
+          <button onclick="selectDifficulty('hard')">🧠 Hard</button>
+        </div>
+      </div>
+
+      <div class="screen" id="pvpFirstScreen">
+        <h1>👥 Player vs Player</h1>
+        <div class="subtitle">Who goes first?</div>
+        <div class="options horizontal">
+          <button onclick="selectPvpFirst('X')">Player X First</button>
+          <button onclick="selectPvpFirst('O')">Player O First</button>
+        </div>
+      </div>
+
+      <div class="screen" id="gameScreen">
+        <h1>🎮 Tic Tac Toe</h1>
+        <div class="game-info">
+          <div class="current-turn" id="turnDisplay">
+            <span class="Xturn">X's Turn</span>
+            <span class="Oturn">O's Turn</span>
+          </div>
+        </div>
+
+        <div class="game-grid" id="gameGrid">
+          <div class="cell" data-index="0" onclick="makeMove(0)"></div>
+          <div class="cell" data-index="1" onclick="makeMove(1)"></div>
+          <div class="cell" data-index="2" onclick="makeMove(2)"></div>
+          <div class="cell" data-index="3" onclick="makeMove(3)"></div>
+          <div class="cell" data-index="4" onclick="makeMove(4)"></div>
+          <div class="cell" data-index="5" onclick="makeMove(5)"></div>
+          <div class="cell" data-index="6" onclick="makeMove(6)"></div>
+          <div class="cell" data-index="7" onclick="makeMove(7)"></div>
+          <div class="cell" data-index="8" onclick="makeMove(8)"></div>
+        </div>
+
+        <div id="gameResult"></div>
+        <div class="game-controls">
+          <button onclick="resetGame()">🔄 New Game</button>
+          <button class="btn-secondary" onclick="goHome()">🏠 Home</button>
+        </div>
+      </div>
+    </div>
+    <!-- Glitch Overlay (for screen effect) -->
+<div id="glitchOverlay"></div>
+
+
+<!-- Toast Notification -->
+<div id="toast"></div>
+<audio id="glitchSound" src="glitch.mp3" preload="auto"></audio>
+
+
+
+    <script src="script.js"></script>
+  </body>
+</html>
