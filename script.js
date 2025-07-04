@@ -25,6 +25,9 @@ let gameInitialized = false;        //This monitors if game is initialized i.e. 
 let botTimeout = null;              //This is a number value.Time out between bot moves to prevent multiple bot moves.Used to control/delay Bot's moves.
 let moveCooldown = false;           //This monitors the cooldown time after every move.Prevents multiple clicks by setting a delay.
 
+const winSound = document.getElementById("winSound");
+const loseSound = document.getElementById("loseSound");
+
 const clickSound = document.getElementById("clickSound");       //Grabs the HTML audio element with id="clickSound".
 const glitchSound = document.getElementById("glitchSound");     //Grabs the HTML audio element with id="glitchSound".
 const goHomeSound = document.getElementById("goHomeSound");     //Grabs the HTML audio element with id="goHomeSound".
@@ -69,35 +72,14 @@ const hardTrolls = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {                 //Triggers when DOM content is loaded.
-  const bgMusic = document.getElementById("main");                    //Grabs the HTML audio element with id="main".This represents a soothing background music.
-  if (bgMusic) {          
-    bgMusic.volume = 0.35;                                            //sets the background music volume to 20% of its actual volume.
-    document.addEventListener("click",() => {                         //Triggers when user clicks anywhere on the document(music starts to play)
-        if (bgMusic.paused) {
-          bgMusic.play().catch((err) => console.warn("Autoplay blocked:", err));          //THis plays music and gives warning if something goes wrong.
-        }
-      },
-      { once: true }                                                  //This makes sure the music runs only for the first click
-    );
-  }
   showScreen("modeScreen");                                           //This loads the modeScreen i.e. the first screen.
 });
-
-function playRandomAudio(idPrefix, count) {                           //Function to play a random audio out of the 8 audios(4 for win and 4 for lose).HEre idPrefix means either 'win' or 'lose'.count is used to generate random number.
-  const index = Math.floor(Math.random() * count) + 1;                //Gets a random index between 1 and count
-  const audio = document.getElementById(`${idPrefix}${index}`);       // Gets the audio element by its dynamically generated ID (e.g., 'win3', 'lose2', etc.).
-  if (audio) {
-    const clone = audio.cloneNode();                                  //Clone the audio to prevent corruption of original audio(This prevents overwriting).
-    clone.currentTime = 0;                                            //Sets current time to 0 everytime the function is invoked.
-    clone.playbackRate = 1.5;                                         //Sets playback speed to 1.5x.
-    clone.play();                                                     //Play the cloned audio.
-  }
-}
 
 document.querySelectorAll("button, .cell").forEach((el) => {          // Adds a click sound effect whenever a button or cell is clicked.
   el.addEventListener("click", () => {                                //Listens for click on any button or cell.
     if (clickSound) {
-      clickSound.currentTime = 0;                                     //Restarts the sound everytime a button/cell is clicked.
+      clickSound.currentTime = 0;  
+      clickSound.volume=0.5;                                   //Restarts the sound everytime a button/cell is clicked.
       clickSound.play();                                              //Play the sound.
     }
   });
@@ -108,14 +90,16 @@ document.querySelectorAll("button, .cell").forEach((el) => {          // Adds a 
   softClick.volume = 0.1;
   softClick.currentTime=0;
   softClick.play();
-  });
+  });
 });
+
 
 function showLoadingThenGame(nextScreenId, callback) {                //Used to display a loading screen before going to gameScreen.nextScreenId is the id of the next screen to be displayed.Callback is passed to do extra functionality after moving to nextScreen.
   const loadingSound = document.getElementById("loadingSound");       //Get the loading sound.
   showScreen("loadingScreen");                                        //Show the loading screen.
   if (loadingSound) {
-    loadingSound.currentTime = 0;                                     //Replay the loading sound everytime this function is invoked.
+    loadingSound.currentTime = 0;
+    loadingSound.volume=0.25;                                     //Replay the loading sound everytime this function is invoked.
     loadingSound.play();                                              //Play the sound.
   }
 
@@ -133,7 +117,8 @@ function showGlitchAndToast(message, callback) {                      //Used to 
 
   if (glitch) glitch.classList.add("glitch-active");                  //If glitch is fetched, add a "glitch-active" class via classList.
   if (glitchSound) {                                                  //If glitchSound is fetched,
-    glitchSound.currentTime = 0;                                      //Replay the glitch sound everytime.
+    glitchSound.currentTime = 0;     
+    glitchSound.volume=0.3;                                 //Replay the glitch sound everytime.
     glitchSound.play();                                               //Play the glitch sound.
   }
 
@@ -467,21 +452,24 @@ function endGame(message) {                                         //This funct
       const drawSound = document.getElementById("drawSound");
       if (drawSound) drawSound.play();
 
-    } else if (message.includes(humanPlayer)) {                     //If human wins against a bot show "You Win! 🎉" and play a random win audio out of the 4.
+    } else if (message.includes(humanPlayer)) {                     //If human wins against a bot show "You Win! 🎉" and play win audio.
       finalMessage = "You Win! 🎉";
-      playRandomAudio("win", 4);
+      winSound.currentTime=0;
+      winSound.volume=0.05;
+      winSound.play();
 
-    } else {                                                        //If bot wins against the human, show  "You Lose! 😭" and play a random lose audio out of the 4.
+    } else {                                                        //If bot wins against the human, show  "You Lose! 😭" and play lose audio.
       finalMessage = "You Lose! 😭";
-      playRandomAudio("lose", 4);
-    }
+      loseSound.currentTime=0;
+      loseSound.play();    }
   } else {                                                          //This else case is for the case whenit is 'pvp' mode.
     if (message.includes("Draw")) {                                 //If ends up in a draw, play the drawSound. Same as bot mode.
       finalMessage = "It's a Draw! 🤝";
       const drawSound = document.getElementById("drawSound");
       if (drawSound) drawSound.play();
     } else {
-      playRandomAudio("win", 4);                                    //Else play a random win audio(Because i dont want to humiliate the player who lost).
+      winSound.currentTime=0;
+      winSound.play();                                  //Else play win audio(Because i dont want to humiliate the player who lost).
     }
   }
 
@@ -497,7 +485,7 @@ function resetGame() {                                              //This reset
   board = ["", "", "", "", "", "", "", "", ""];                     //Clear the board entirely.
   gameActive = true;                                                //Game can now be played.
   currentPlayer = "X";                                              //X starts first.
-  gameInitialized = true;                                          // Set to true.
+  gameInitialized = true;                                           // Set to true.
   botHasMoved = false;                                              // Needed for proper bot player selection
   moveCooldown = false;                                             //// Remove anti-double-click cooldown
 
