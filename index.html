@@ -31,7 +31,7 @@
         <div class="options horizontal">
           <button onclick="selectDifficulty('easy')">😴 Easy</button>
           <button onclick="selectDifficulty('medium')">🙂 Medium</button>
-          <button onclick="selectDifficulty('hard')">🧠 Hard</button>
+          <button onclick="selectDifficulty('hard')">💀 Hard</button>
         </div>
       </div>
 
@@ -42,6 +42,29 @@
           <button onclick="selectPvpFirst('X')">Player X First</button>
           <button onclick="selectPvpFirst('O')">Player O First</button>
         </div>
+      </div>
+
+      <div class="screen" id="loadingScreen">
+        <div class="loading-title">Initializing Grid</div>
+
+        <div class="loading-animation">
+          <div class="orbit-ring"></div>
+          <div class="orbit-ring"></div>
+          <div class="orbit-ring"></div>
+          <div class="orbit-ring"></div>
+          <div class="loading-core"></div>
+          <div class="loading-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+          </div>
+        </div>
+
+        <div class="loading-text">Scanning Coordinates...</div>
+        <div class="loading-progress"></div>
       </div>
 
       <div class="screen" id="gameScreen">
@@ -68,19 +91,29 @@
         <div id="gameResult"></div>
         <div class="game-controls">
           <button onclick="resetGame()">🔄 New Game</button>
-          <button class="btn-secondary" onclick="goHome()">🏠 Home</button>
+          <button id="goHomeBtn" class="btn-secondary" onclick="goHome()">
+            🏠 Home
+          </button>
         </div>
       </div>
     </div>
-    <!-- Glitch Overlay (for screen effect) -->
-<div id="glitchOverlay"></div>
+    <div id="glitchOverlay"></div>
+    <div id="toast"></div>
 
-
-<!-- Toast Notification -->
-<div id="toast"></div>
-<audio id="glitchSound" src="glitch.mp3" preload="auto"></audio>
-
-
+    <audio id="main" src="sounds/main.mp3" autoplay loop></audio>
+    <audio id="glitchSound" src="sounds/glitch1.mp3" preload="auto"></audio>
+    <audio id="goHomeSound" src="sounds/home.mp3"></audio>
+    <audio id="clickSound" src="sounds/click1.mp3?v=2"></audio>
+    <audio id="loadingSound" src="sounds/loading.mp3"></audio>
+    <audio id="win1" src="sounds/win1.mp3"></audio>
+    <audio id="win2" src="sounds/win2.mp3"></audio>
+    <audio id="win3" src="sounds/win3.mp3"></audio>
+    <audio id="win4" src="sounds/win4.mp3"></audio>
+    <audio id="lose1" src="sounds/lose1.mp3"></audio>
+    <audio id="lose2" src="sounds/lose2.mp3"></audio>
+    <audio id="lose3" src="sounds/lose3.mp3"></audio>
+    <audio id="lose4" src="sounds/lose4.mp3"></audio>
+    <audio id="drawSound" src="sounds/draw.mp3"></audio>
 
     <script src="script.js"></script>
   </body>

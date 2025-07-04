@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Arbutus&family=Jersey+20&family=Press+Start+2P&family=VT323&display=swap');
 
 :root {
   --primary: #22d3ee;     /* Cyan Pulse */
@@ -96,6 +97,13 @@ body::before {
   display: block;
   animation: slideIn 0.5s ease-out;
 }
+#gameScreen {
+  pointer-events: none;
+}
+.screen.active#gameScreen {
+  pointer-events: auto;
+}
+
 @keyframes slideIn{
     0%{
         opacity:0;
@@ -183,8 +191,8 @@ button:hover::before{
 button:hover{
     transform:translateY(-3px) scale(1.05);
     box-shadow:
-        0 15px 30px rgba(0, 255, 136, 0.4),
-        0 0 20px rgba(0, 255, 136, 0.3);
+        0 5px 25px rgba(0, 255, 136, 0.4),
+        0 0 15px rgba(0, 255, 136, 0.3);
 }
 button:active{
     transform: translateY(-1px) scale(1.02);
@@ -584,6 +592,198 @@ button:active{
     transform: translate(0, 0);
     clip-path: inset(0 0 0 0);
   }
+}
+
+/* ======= LOADING SCREEN (Inside .screen system) ======= */
+#loadingScreen {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  min-height: 400px;
+}
+
+/* ======= LOADING TITLE ======= */
+#loadingScreen .loading-title {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--text-light);
+  margin-bottom: 30px;
+  text-shadow: 0 0 10px var(--text-glow), 0 0 20px var(--text-glow);
+  letter-spacing: 3px;
+  animation: loadingTitlePulse 2s ease-in-out infinite;
+}
+
+@keyframes loadingTitlePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* ======= ANIMATION RINGS WRAPPER ======= */
+#loadingScreen .loading-animation {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 20px auto;
+}
+
+#loadingScreen .orbit-ring {
+  position: absolute;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  animation: rotate 3s linear infinite;
+}
+
+#loadingScreen .orbit-ring:nth-child(1) {
+  width: 80px;
+  height: 80px;
+  top: 60px;
+  left: 60px;
+  border-top: 2px solid var(--primary);
+  border-right: 2px solid var(--primary);
+  animation-duration: 2s;
+}
+
+#loadingScreen .orbit-ring:nth-child(2) {
+  width: 120px;
+  height: 120px;
+  top: 40px;
+  left: 40px;
+  border-bottom: 2px solid var(--secondary);
+  border-left: 2px solid var(--secondary);
+  animation-duration: 3s;
+  animation-direction: reverse;
+}
+
+#loadingScreen .orbit-ring:nth-child(3) {
+  width: 160px;
+  height: 160px;
+  top: 20px;
+  left: 20px;
+  border-top: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+  animation-duration: 4s;
+}
+
+#loadingScreen .orbit-ring:nth-child(4) {
+  width: 200px;
+  height: 200px;
+  top: 0px;
+  left: 0px;
+  border-bottom: 2px solid var(--primary);
+  border-left: 2px solid var(--primary);
+  animation-duration: 5s;
+  animation-direction: reverse;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ======= CENTER PULSING CORE ======= */
+#loadingScreen .loading-core {
+  position: absolute; 
+  width: 40px;
+  height: 40px;
+  top: 80px;
+  left: 80px;
+  background: radial-gradient(circle, var(--primary), var(--accent));
+  border-radius: 50%;
+  animation: corePulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 20px var(--primary), 0 0 40px var(--accent);
+}
+
+@keyframes corePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* ======= PARTICLE EFFECTS ======= */
+#loadingScreen .loading-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+#loadingScreen .particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--primary);
+  border-radius: 50%;
+  opacity: 0;
+  animation: particleFloat 2s ease-in-out infinite;
+}
+
+#loadingScreen .particle:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+#loadingScreen .particle:nth-child(2) { top: 30%; right: 15%; animation-delay: 0.3s; background: var(--secondary); }
+#loadingScreen .particle:nth-child(3) { bottom: 20%; left: 10%; animation-delay: 0.6s; background: var(--accent); }
+#loadingScreen .particle:nth-child(4) { bottom: 40%; right: 25%; animation-delay: 0.9s; }
+#loadingScreen .particle:nth-child(5) { top: 50%; left: 5%; animation-delay: 1.2s; background: var(--secondary); }
+#loadingScreen .particle:nth-child(6) { top: 70%; right: 10%; animation-delay: 1.5s; background: var(--accent); }
+
+@keyframes particleFloat {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0px) scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-20px) scale(1);
+  }
+}
+
+/* ======= TEXT BELOW THE LOADER ======= */
+#loadingScreen .loading-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-glow);
+  margin-top: 30px;
+  letter-spacing: 2px;
+  animation: loadingTextBlink 1s ease-in infinite;
+}
+
+@keyframes loadingTextBlink {
+  0%, 50% { opacity: 1; }
+  25%, 75%{opacity:0.6;}
+  51%, 100% { opacity: 0.3; }
+}
+
+/* ======= PROGRESS BAR BELOW TEXT ======= */
+#loadingScreen .loading-progress {
+  width: 100%;
+  height: 4px;
+  background: #1e293b;
+  border-radius: 2px;
+  margin-top: 20px;
+  overflow: hidden;
+  position: relative;
+  left:auto;
+}
+
+#loadingScreen .loading-progress::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  animation: progressBar 5.5s linear forwards;
+}
+
+@keyframes progressBar {
+  0% { width: 0%; }
+  100% { width: 100%; }
 }
 
 @media (max-width: 600px) {
